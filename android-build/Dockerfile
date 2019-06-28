@@ -43,5 +43,3 @@ RUN cd /tmp && \
 ENV PATH=${PATH}:/opt/go/bin
 
 COPY build.sh /usr/local/bin/build.sh
-
-ENTRYPOINT ["/usr/local/bin/build.sh"]
