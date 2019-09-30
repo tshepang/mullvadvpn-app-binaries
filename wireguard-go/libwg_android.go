@@ -1,9 +1,13 @@
 // +build android
 package main
 
+// #cgo LDFLAGS: -llog
+// #include <android/log.h>
+import "C"
+
 import (
-	"C"
 	"bufio"
+	"log"
 	"math"
 	"net"
 	"strings"
@@ -14,6 +18,15 @@ import (
 	"golang.zx2c4.com/wireguard/ipc"
 	"golang.zx2c4.com/wireguard/tun"
 )
+
+type AndroidLogger struct {
+	level C.int
+}
+
+func (logger AndroidLogger) Write(buffer []byte) (int, error) {
+	C.__android_log_write(logger.level, C.CString("wireguard"), C.CString(string(buffer)))
+	return len(buffer), nil
+}
 
 //export wgGetSocketV4
 func wgGetSocketV4(tunnelHandle int32) int32 {
@@ -44,7 +57,12 @@ func wgGetSocketV6(tunnelHandle int32) int32 {
 //export wgTurnOnWithFdAndroid
 func wgTurnOnWithFdAndroid(cIfaceName *C.char, mtu int, cSettings *C.char, fd int, loggingFd int, level int) int32 {
 
-	logger := newLogger(loggingFd, level)
+	logger := &device.Logger {
+		Debug: log.New(&AndroidLogger { level: C.ANDROID_LOG_DEBUG }, "", 0),
+		Info: log.New(&AndroidLogger { level: C.ANDROID_LOG_INFO }, "", 0),
+		Error: log.New(&AndroidLogger { level: C.ANDROID_LOG_ERROR }, "", 0),
+	}
+
 	if cIfaceName == nil {
 		logger.Error.Println("cIfaceName is null")
 		return -1
@@ -110,5 +128,6 @@ func wgTurnOnWithFdAndroid(cIfaceName *C.char, mtu int, cSettings *C.char, fd in
 	}
 	tunnelHandles[i] = TunnelHandle{device: device, uapi: uapi}
 	device.Up()
+
 	return i
 }
