@@ -1,5 +1,6 @@
 cd openssl
 
+:: Keep in sync with those in Makefile
 set OPENSSL_CONFIG=enable-capieng ^
   enable-rfc3779 ^
   no-ssl3 ^
@@ -8,7 +9,8 @@ set OPENSSL_CONFIG=enable-capieng ^
   no-dso ^
   no-idea ^
   no-shared ^
-  no-seed
+  no-seed ^
+  no-autoload-config
 
 perl Configure VC-WIN64A ^
   --prefix=%cd%\..\msvc-openssl ^

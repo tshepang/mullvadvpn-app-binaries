@@ -4,6 +4,7 @@ WINDOWS_BUILDROOT = openvpn-build/generic/tmp
 WINDOWS_SOURCEROOT = openvpn-build/generic/sources
 
 OPENSSL_VERSION = openssl-1.1.1d
+# Remember to keep in sync with settings in build-openssl-with-msvc.bat
 OPENSSL_CONFIG = no-weak-ssl-ciphers no-ssl3 no-ssl3-method no-bf no-rc2 no-rc4 no-rc5 \
 	no-md4 no-seed no-cast no-camellia no-idea enable-ec_nistp_64_gcc_128 enable-rfc3779
 # To stop OpenSSL from loading C:\etc\ssl\openvpn.cnf (and equivalent) on start.
