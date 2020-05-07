@@ -149,16 +149,6 @@ and not a random commit. Also verify that said tag is properly signed by the fol
 
 To build the MullvadVPN app, one has to have statically linkable OpenSSL libraries.
 
-### Android
-
-The OpenSSL static binaries are cross-compiled using a custom Docker image. You can build the image
-with the final binaries and extract them to the appropriate sub-directory in the repository using
-the following command:
-
-```bash
-make android
-```
-
 ### Linux + macOS
 
 To build statically linkable OpenSSL libraries on macOS and Linux, just run
